@@ -2,6 +2,9 @@ package ra.ra.model;
 
 
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import javax.persistence.*;
 
 @Entity
@@ -12,16 +15,27 @@ public class Blog {
     private Long id;
     private String blogName;
     private String blogDetail;
-    private Long categoryId;
+    @ManyToOne
+    @JoinColumn(name = "category_id")
+    @JsonIgnoreProperties("blogs")
+    private Category category;
+    public Blog() {
+    }
 
-    public Blog(Long id, String blogName, String blogDetail, Long categoryId) {
+    public Blog(Long id, String blogName, String blogDetail, Category category) {
         this.id = id;
         this.blogName = blogName;
         this.blogDetail = blogDetail;
-        this.categoryId = categoryId;
+        this.category = category;
     }
 
-    public Blog() {
+
+    public Category getCategory() {
+        return category;
+    }
+
+    public void setCategory(Category category) {
+        this.category = category;
     }
 
     public Long getId() {
@@ -32,13 +46,7 @@ public class Blog {
         this.id = id;
     }
 
-    public Long getCategoryId() {
-        return categoryId;
-    }
 
-    public void setCategoryId(Long categoryId) {
-        this.categoryId = categoryId;
-    }
 
     public String getBlogName() {
         return blogName;
